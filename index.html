@@ -152,15 +152,26 @@
         function fazCalculo(){
             var resultado=document.getElementById("resultado");
             //pega os valores
+            // o new Date transforma os valores digitados nos campos inputs do tipo "date" em um formato de data padrão que o código é capaz de interpretar
             var checkin=new Date(document.getElementById("checkin").value);
             var checkout=new Date(document.getElementById("checkout").value);
             var diaria=document.getElementById("diaria").value;
             //verifica se o usuário realmente digitou algo
             if(checkin!='Invalid Date' && checkout!='Invalid Date' && diaria!=NaN){
                 document.getElementById("alertaErro").style.display="none";
-                //faz o cálculo
+                //faz o cálculo]
+                //O Math.abs está pegando o valor absoluto da subtração, ou seja, sem o valor negativo (não importanto a ordem em que vamos colocar o checkin e o checkout)
+                //o getTime() está passando as datas para milissegundos (calculando os milissegundo que passaram desde 1/01/1970 até a data especificada)
                 var diferenca=Math.abs(checkin.getTime()-checkout.getTime());
+                // o Math.ceil está arredondando o valor da divião para cima para dar sempre números exatos.
+                //a diferença (data de checkin - data de checkout) é dividida pelo número de milissegundos em 1 dia. É como converter de milissegundos para dias.
+                // Em 1 segundo há 10000 milissegundos
+                // 1 minuto possui 60 segundos
+                // 1 hora possui 60 minutos
+                // e 1 dia possui 24 horas
+                // sendo assim, multiplando tudo isso temos a quantidade de milissegundos em 1 dia. Ao divirdimos a diferença entre as datas (em milissegundos) por esse valor temos a quantidade de dias que a pessoa ficará hospedada. 
                 var dias =Math.ceil(diferenca/(1000*60*60*24));
+                // multiplicamos a quantidade de dias pelo preço da diária e temos o total que será pago. 
                 var preco=(dias*diaria).toFixed(2);
                 //exibe o resultado
                 resultado.innerHTML="Você ficará "+dias+" dias hospedado e pagará R$ "+preco+" reais pela estadia.";
