@@ -74,7 +74,7 @@
             padding-left: 0;
             margin-top: 5px;
         }
-        input{
+        input, select{
             display: inline-block;
             width: 100%;
             height: 40px;
@@ -118,8 +118,12 @@
                         <input type="date" name="checkout" id="checkout">
                     </div>
                     <div class="campoInput">
-                        <label for="diaria">valor da diária</label>
-                        <input type="number" name="diaria" id="diaria" placeholder="R$" min="10">
+                        <select name="campoSelect" id="valoresSelect">
+                            <option value="10">quarto 1</option>
+                            <option value="20">quarto 2</option>
+                            <option value="30">quarto 3</option>
+                            <option value="40">quarto 4</option>
+                        </select>
                     </div>
                     <button class="botao" style="width:100%" onclick="fazCalculo()">cadastrar</button>
                     <button class="botao" style="width:100%; margin-top:20px" onclick="fecharForms()">Cancelar</button>          
@@ -143,7 +147,6 @@
             var resultado=document.getElementById("resultado");
             var checkin=document.getElementById("checkin").value='';
             var checkout=document.getElementById("checkout").value='';
-            var diaria=document.getElementById("diaria").value='';
             campoForms.style.display="none";
             document.getElementById("alertaErro").style.display="none";
             resultado.innerHTML=" ";
@@ -155,9 +158,11 @@
             // o new Date transforma os valores digitados nos campos inputs do tipo "date" em um formato de data padrão que o código é capaz de interpretar
             var checkin=new Date(document.getElementById("checkin").value);
             var checkout=new Date(document.getElementById("checkout").value);
-            var diaria=document.getElementById("diaria").value;
+            //var diaria=document.getElementById("diaria").value;
+            var valoresSelect = document.getElementById('valoresSelect').value
+           
             //verifica se o usuário realmente digitou algo
-            if(checkin!='Invalid Date' && checkout!='Invalid Date' && diaria!=NaN){
+            if(checkin!='Invalid Date' && checkout!='Invalid Date'){
                 document.getElementById("alertaErro").style.display="none";
                 //faz o cálculo]
                 //O Math.abs está pegando o valor absoluto da subtração, ou seja, sem o valor negativo (não importanto a ordem em que vamos colocar o checkin e o checkout)
@@ -172,7 +177,7 @@
                 // sendo assim, multiplando tudo isso temos a quantidade de milissegundos em 1 dia. Ao divirdimos a diferença entre as datas (em milissegundos) por esse valor temos a quantidade de dias que a pessoa ficará hospedada. 
                 var dias =Math.ceil(diferenca/(1000*60*60*24));
                 // multiplicamos a quantidade de dias pelo preço da diária e temos o total que será pago. 
-                var preco=(dias*diaria).toFixed(2);
+                var preco=(dias*valoresSelect).toFixed(2);
                 //exibe o resultado
                 resultado.innerHTML="Você ficará "+dias+" dias hospedado e pagará R$ "+preco+" reais pela estadia.";
             }else{
